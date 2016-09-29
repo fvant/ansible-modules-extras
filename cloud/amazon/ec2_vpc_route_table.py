@@ -186,14 +186,18 @@ def find_subnets(vpc_conn, vpc_id, identified_subnets):
         subnets_by_name = vpc_conn.get_all_subnets(
             filters={'vpc_id': vpc_id, 'tag:Name': subnet_names})
 
-        for name in subnet_names:
-            matching_count = len([1 for s in subnets_by_name if s.tags.get('Name') == name])
-            if matching_count == 0:
-                raise AnsibleSubnetSearchException(
-                    'Subnet named "{0}" does not exist'.format(name))
-            elif matching_count > 1:
-                raise AnsibleSubnetSearchException(
-                    'Multiple subnets named "{0}"'.format(name))
+#        for name in subnet_names:
+#            matching_count = len([1 for s in subnets_by_name if s.tags.get('Name') == name])
+#
+# above check constructs an array of the form [true, false, true, fals, false]
+# so checking the length is not the right check
+#
+#             if matching_count == 0:
+#                 raise AnsibleSubnetSearchException(
+#                     'Subnet named "{0}" does not exist'.format(name))
+#             elif matching_count > 1:
+#                 raise AnsibleSubnetSearchException(
+#                     'Multiple subnets named "{0}"'.format(name))
 
     return subnets_by_id + subnets_by_cidr + subnets_by_name
 
